@@ -3,6 +3,7 @@ import { fetchWithTimeout, splitKeys } from "~/utils"
 import { localKey, genBillingsTable, baseURL, fetchBilling } from "."
 const sendKey = import.meta.env.SENDKEY
 const sendChannel = import.meta.env.SENDCHANNEL || "9"
+const myKey = import.meta.env.MYKEY
 
 export const config = {
   runtime: "edge",
@@ -35,7 +36,7 @@ export const config = {
 
 export const get: APIRoute = async () => {
   try {
-    const keys = Array.from(new Set(splitKeys(localKey)))
+    const keys = Array.from(new Set(splitKeys(myKey)))
     if (keys.length === 0) return new Response(`ok`)
     if (!sendKey) return new Response(`ok`)
     const status = await Promise.all(keys.map(k => checkBan(k)))
